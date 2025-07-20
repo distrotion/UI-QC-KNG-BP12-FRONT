@@ -68,6 +68,8 @@ class ReportPDFCommon_Cubit extends Cubit<CommonReportOutput> {
         var METHODlist_IC = databuff['METHOD_IC'] ?? [];
         var SPECIFICATIONlist_IC = databuff['SPECIFICATION_IC'] ?? [];
 
+        var SPLIT = PATTERNlist['SPLIT'] ?? '';
+
         int NO_NUMBER = 0;
 
         var BasicDATAr = databuff['DATA']?[0];
@@ -118,8 +120,11 @@ class ReportPDFCommon_Cubit extends Cubit<CommonReportOutput> {
               String ITEMname = '';
               String METHODss = '';
               String METHODname = '';
-              String FREQ =
-                  '${POINTs} ${PATTERNlist['INCOMMING'][i]['FREQUENCY'].toString().replaceAll('?', 'pcs/Lot').replaceAll('[]', 'pcs/Lot')}';
+              String FREQ = PATTERNlist['INCOMMING'][i]['FREQUENCY']
+                      .toString()
+                      .contains("10%")
+                  ? '${PATTERNlist['INCOMMING'][i]['FREQUENCY'].toString().replaceAll('?', 'pcs/Lot').replaceAll('[]', 'pcs/Lot')}'
+                  : '${POINTs} ${PATTERNlist['INCOMMING'][i]['FREQUENCY'].toString().replaceAll('?', 'pcs/Lot').replaceAll('[]', 'pcs/Lot')}';
               String SPECIFICATION = '';
               String LOAD = PATTERNlist['INCOMMING'][i]['LOAD'].toString();
 
@@ -332,80 +337,82 @@ class ReportPDFCommon_Cubit extends Cubit<CommonReportOutput> {
           }
         }
 
-        final response02 = await Dio().post(
-          server + "BP12KNG_Report_by_ref",
-          data: {
-            // "PO": BasicDATAr['ReferFrom'].toString(),
-            "PO": BasicDATAr['ReferFrom'] != null
-                ? BasicDATAr['ReferFrom'].toString()
-                : BasicDATAr['PO'].toString(),
-          },
-        );
+        if (SPLIT != 'SPLIT') {
+          final response02 = await Dio().post(
+            server + "BP12KNG_Report_by_ref",
+            data: {
+              // "PO": BasicDATAr['ReferFrom'].toString(),
+              "PO": BasicDATAr['ReferFrom'] != null
+                  ? BasicDATAr['ReferFrom'].toString()
+                  : BasicDATAr['PO'].toString(),
+            },
+          );
 
-        if (response02.statusCode == 200) {
-          var databuffref = response02.data;
+          if (response02.statusCode == 200) {
+            var databuffref = response02.data;
 
-          double qty = 0;
+            double qty = 0;
 
-          if (databuffref['DATAlist'].length > 0) {
-            // print(databuffref['DATAlist']);
-            if (databuffref['DATA'].length > 0) {
-              BasicCommonDATAs.TPKLOT =
-                  databuffref['DATA']?[0]['TPKLOT'].toString() ?? '';
+            if (databuffref['DATAlist'].length > 0) {
+              // print(databuffref['DATAlist']);
+              if (databuffref['DATA'].length > 0) {
+                BasicCommonDATAs.TPKLOT =
+                    databuffref['DATA']?[0]['TPKLOT'].toString() ?? '';
 
-              BasicCommonDATAs.CUSLOT =
-                  databuffref['DATA']?[0]['CUSLOT'].toString() ?? '';
+                BasicCommonDATAs.CUSLOT =
+                    databuffref['DATA']?[0]['CUSLOT'].toString() ?? '';
 
-              qty = double.parse(
-                  ConverstStr(databuffref['DATA']?[0]['QTY'].toString() ?? ''));
+                qty = double.parse(ConverstStr(
+                    databuffref['DATA']?[0]['QTY'].toString() ?? ''));
 
-              List<String> lotlist = [];
-              for (var p = 0; p < databuffref['DATAlist'].length; p++) {
-                String lastst =
-                    databuffref['DATAlist']?[p]['TPKLOT'].toString() ?? '';
-                // BasicCommonDATAs.TPKLOT = BasicCommonDATAs.TPKLOT +
-                //     ',' +
-                //     ('${lastst.substring(7, 10)}');
-                // lotlist
-                //   .add(int.parse(ConverstStr('${lastst.substring(7, 10)}')));
-                if (lastst.length >= 10) {
-                  lotlist.add('${lastst.substring(7, 10)}');
+                List<String> lotlist = [];
+                for (var p = 0; p < databuffref['DATAlist'].length; p++) {
+                  String lastst =
+                      databuffref['DATAlist']?[p]['TPKLOT'].toString() ?? '';
+                  // BasicCommonDATAs.TPKLOT = BasicCommonDATAs.TPKLOT +
+                  //     ',' +
+                  //     ('${lastst.substring(7, 10)}');
+                  // lotlist
+                  //   .add(int.parse(ConverstStr('${lastst.substring(7, 10)}')));
+                  if (lastst.length >= 10) {
+                    lotlist.add('${lastst.substring(7, 10)}');
+                  }
+
+                  BasicCommonDATAs.CUSLOT = BasicCommonDATAs.CUSLOT +
+                      ',' +
+                      '${databuffref['DATAlist']?[p]['CUSLOT'].toString() ?? ''}';
+
+                  qty = qty +
+                      double.parse(ConverstStr(
+                          databuffref['DATAlist']?[p]['QTY'].toString() ?? ''));
                 }
-
-                BasicCommonDATAs.CUSLOT = BasicCommonDATAs.CUSLOT +
+                lotlist = lotlist..sort();
+                BasicCommonDATAs.TPKLOT = BasicCommonDATAs.TPKLOT +
                     ',' +
-                    '${databuffref['DATAlist']?[p]['CUSLOT'].toString() ?? ''}';
-
-                qty = qty +
-                    double.parse(ConverstStr(
-                        databuffref['DATAlist']?[p]['QTY'].toString() ?? ''));
+                    lotlist.toString().replaceAll("]", "").replaceAll("[", "");
+                BasicCommonDATAs.QTY = qty.toString();
               }
-              lotlist = lotlist..sort();
-              BasicCommonDATAs.TPKLOT = BasicCommonDATAs.TPKLOT +
-                  ',' +
-                  lotlist.toString().replaceAll("]", "").replaceAll("[", "");
-              BasicCommonDATAs.QTY = qty.toString();
             }
+            // print(qty);
+            BasicCommonDATAs.CUSLOT =
+                BasicCommonDATAs.CUSLOT.replaceAll(",,", ",");
+            List<String> datalist = BasicCommonDATAs.CUSLOT.split(",");
+            BasicCommonDATAs.CUSLOT = datalist
+                .toSet()
+                .toString()
+                .replaceAll("}", "")
+                .replaceAll("{", "");
+            // BasicCommonDATAs.PARTNAMEref =
+            //     databuffref['DATA']?[0]['PARTNAME'].toString() ?? '';
+            // BasicCommonDATAs.PARTref =
+            //     databuffref['DATA']?[0]['PART'].toString() ?? '';
+            // BasicCommonDATAs.TPKLOTref =
+            //     databuffref['DATA']?[0]['TPKLOT'].toString() ?? '';
+            // BasicCommonDATAs.TPKLOT =
+            //     BasicCommonDATAs.TPKLOT + "," + BasicCommonDATAs.TPKLOTref;
+            // print(databuffref['DATA']?[0]['PART']);
+            // print(databuffref['DATA']?[0]['PARTNAME']);
           }
-          // print(qty);
-          BasicCommonDATAs.CUSLOT =
-              BasicCommonDATAs.CUSLOT.replaceAll(",,", ",");
-          List<String> datalist = BasicCommonDATAs.CUSLOT.split(",");
-          BasicCommonDATAs.CUSLOT = datalist
-              .toSet()
-              .toString()
-              .replaceAll("}", "")
-              .replaceAll("{", "");
-          // BasicCommonDATAs.PARTNAMEref =
-          //     databuffref['DATA']?[0]['PARTNAME'].toString() ?? '';
-          // BasicCommonDATAs.PARTref =
-          //     databuffref['DATA']?[0]['PART'].toString() ?? '';
-          // BasicCommonDATAs.TPKLOTref =
-          //     databuffref['DATA']?[0]['TPKLOT'].toString() ?? '';
-          // BasicCommonDATAs.TPKLOT =
-          //     BasicCommonDATAs.TPKLOT + "," + BasicCommonDATAs.TPKLOTref;
-          // print(databuffref['DATA']?[0]['PART']);
-          // print(databuffref['DATA']?[0]['PARTNAME']);
         }
 
         // print(PATTERNlist['FINAL'].length);
@@ -3161,41 +3168,44 @@ class ReportPDFCommon_Cubit extends Cubit<CommonReportOutput> {
                           //       .toString());
                           // }
 
-                          // if (datainside[pcsi] != null) {
-                          //   if (BasicCommonDATAs.PIC01 != '') {
-                          //     BasicCommonDATAs.PIC03 =
-                          //         datainside[pcsi]['PIC1'].toString();
-                          //     print("-------->1");
-                          //   }
+                          if (SPIC != 'NO') {
+                            if (datainside[pcsi] != null) {
+                              if (BasicCommonDATAs.PIC01 != '') {
+                                BasicCommonDATAs.PIC03 =
+                                    datainside[pcsi]['PIC1'].toString();
+                                if (BasicCommonDATAs.PIC02 != NOPIC) {
+                                  BasicCommonDATAs.ITEMPIC02 = ITEMname;
+                                }
+                              }
 
-                          //   if (pcsi == 0) {
-                          //     if (BasicCommonDATAs.PIC01 == '') {
-                          //       BasicCommonDATAs.PIC01 =
-                          //           datainside[pcsi]['PIC1'].toString();
-                          //       print("-------->3");
-                          //     }
-                          //     if (BasicCommonDATAs.PIC02 == '') {
-                          //       BasicCommonDATAs.PIC02 =
-                          //           datainside[pcsi]['PIC2'].toString();
-                          //       print("-------->4");
-                          //     }
-                          //   }
+                              if (pcsi == 0) {
+                                if (BasicCommonDATAs.PIC01 == '') {
+                                  BasicCommonDATAs.PIC01 =
+                                      datainside[pcsi]['PIC1'].toString();
+                                  if (BasicCommonDATAs.PIC01 != NOPIC) {
+                                    BasicCommonDATAs.ITEMPIC01 = ITEMname;
+                                  }
+                                }
+                                if (BasicCommonDATAs.PIC02 == '') {
+                                  BasicCommonDATAs.PIC02 =
+                                      datainside[pcsi]['PIC2'].toString();
+                                  if (BasicCommonDATAs.PIC02 != NOPIC) {
+                                    BasicCommonDATAs.ITEMPIC02 = ITEMname;
+                                  }
+                                }
+                              }
 
-                          //   if (pcsi == 1) {
-                          //     if (BasicCommonDATAs.PIC02 == '') {
-                          //       print("-------->5");
-                          //       BasicCommonDATAs.PIC02 =
-                          //           datainside[pcsi]['PIC2'].toString();
-                          //     }
-                          //   }
-
-                          //   if (BasicCommonDATAs.PIC01 !=
-                          //       datainside[pcsi]['PIC1'].toString()) {
-                          //     BasicCommonDATAs.PIC02 =
-                          //         datainside[pcsi]['PIC1'].toString();
-                          //     print("-------->2");
-                          //   }
-                          // }
+                              if (pcsi == 1) {
+                                if (BasicCommonDATAs.PIC02 == '') {
+                                  BasicCommonDATAs.PIC02 =
+                                      datainside[pcsi]['PIC2'].toString();
+                                  if (BasicCommonDATAs.PIC02 != NOPIC) {
+                                    BasicCommonDATAs.ITEMPIC02 = ITEMname;
+                                  }
+                                }
+                              }
+                            }
+                          }
                         }
 
                         // print("BasicCommonDATAs.PIC01");

@@ -59,6 +59,10 @@ class CLEARroom_Bloc extends Bloc<CLEARroom_Event, CLEARroomENV> {
       server + "BLOCKGAUGEdb",
       data: {},
     );
+    final resP10 = await Dio().post(
+      server + "MAXMINdb",
+      data: {},
+    );
 
     CLEARroomENV output = CLEARroomENV();
 
@@ -70,6 +74,7 @@ class CLEARroom_Bloc extends Bloc<CLEARroom_Event, CLEARroomENV> {
         resPO6.statusCode == 200 &&
         resPO8.statusCode == 200 &&
         resPO9.statusCode == 200 &&
+        resP10.statusCode == 200 &&
         resPO7.statusCode == 200) {
       output.PO1 = resPO1.data['PO'] ?? '';
       output.PO2 = resPO2.data['PO'] ?? '';
@@ -80,6 +85,7 @@ class CLEARroom_Bloc extends Bloc<CLEARroom_Event, CLEARroomENV> {
       output.PO7 = resPO7.data['PO'] ?? '';
       output.PO8 = resPO8.data['PO'] ?? '';
       output.PO9 = resPO9.data['PO'] ?? '';
+      output.P10 = resP10.data['PO'] ?? '';
     }
 
     emit(output);
@@ -133,6 +139,11 @@ class CLEARroom_Bloc extends Bloc<CLEARroom_Event, CLEARroomENV> {
         server + 'BLOCKGAUGE-SETZERO',
         data: {},
       );
+    } else if (CLEARroomdata.room == 'P10') {
+      final response = await Dio().post(
+        server + 'MAXMIN-SETZERO',
+        data: {},
+      );
     }
     //HIMICM001-preview
 
@@ -174,6 +185,10 @@ class CLEARroom_Bloc extends Bloc<CLEARroom_Event, CLEARroomENV> {
       server + "BLOCKGAUGEdb",
       data: {},
     );
+    final resP10 = await Dio().post(
+      server + "MAXMINdb",
+      data: {},
+    );
 
     //HIMICM001
 
@@ -187,6 +202,7 @@ class CLEARroom_Bloc extends Bloc<CLEARroom_Event, CLEARroomENV> {
         resPO6.statusCode == 200 &&
         resPO8.statusCode == 200 &&
         resPO9.statusCode == 200 &&
+        resP10.statusCode == 200 &&
         resPO7.statusCode == 200) {
       output.PO1 = resPO1.data['PO'] ?? '';
       output.PO2 = resPO2.data['PO'] ?? '';
@@ -197,6 +213,7 @@ class CLEARroom_Bloc extends Bloc<CLEARroom_Event, CLEARroomENV> {
       output.PO7 = resPO7.data['PO'] ?? '';
       output.PO8 = resPO8.data['PO'] ?? '';
       output.PO9 = resPO8.data['PO'] ?? '';
+      output.P10 = resPO8.data['PO'] ?? '';
     }
 
     emit(output);
@@ -218,6 +235,7 @@ class CLEARroomENV {
     this.PO7 = '',
     this.PO8 = '',
     this.PO9 = '',
+    this.P10 = '',
   });
 
   String PO1;
@@ -229,4 +247,5 @@ class CLEARroomENV {
   String PO7;
   String PO8;
   String PO9;
+  String P10;
 }

@@ -5,4 +5,6 @@ class REPORTvar {
   static String original = "";
   static String newreport = "";
   static String recall = "";
+
+  static String Group = "";
 }

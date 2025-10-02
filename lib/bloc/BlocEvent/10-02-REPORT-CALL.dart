@@ -91,6 +91,7 @@ class REPORT_CALL_Bloc extends Bloc<REPORT_CALL_Event, String> {
       data: {
         "original": REPORTvar.original,
         "new": REPORTvar.newreport,
+        "Group": REPORTvar.Group,
       },
     );
 

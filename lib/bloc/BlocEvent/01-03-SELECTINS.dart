@@ -23,6 +23,8 @@ class TRICKERMASTER_GETINtoSPLINEGAUGE extends TRICKERMASTER_Event {}
 
 class TRICKERMASTER_GETINtoDSA01 extends TRICKERMASTER_Event {}
 
+class TRICKERMASTER_GETINtoMAXMIN extends TRICKERMASTER_Event {}
+
 //
 
 class TRICKERMASTER_GETINtoKNGMCS001 extends TRICKERMASTER_Event {}
@@ -67,6 +69,10 @@ class TRICKERMASTER_Bloc extends Bloc<TRICKERMASTER_Event, String> {
 
     on<TRICKERMASTER_GETINtoDSA01>((event, emit) {
       return _TRICKERMASTER_GETINtoDSA01('', emit);
+    });
+
+    on<TRICKERMASTER_GETINtoMAXMIN>((event, emit) {
+      return _TRICKERMASTER_GETINtoMAXMIN('', emit);
     });
 
     on<TRICKERMASTER_FLUSH>((event, emit) {
@@ -289,6 +295,32 @@ class TRICKERMASTER_Bloc extends Bloc<TRICKERMASTER_Event, String> {
     String output = '';
     if (response.statusCode == 200) {
       var databuff = response.data;
+      if (databuff.toString() == 'OK') {
+        output = 'OK';
+      } else {
+        output = 'NOK';
+      }
+    } else {
+      //
+    }
+    emit(output);
+  }
+
+  Future<void> _TRICKERMASTER_GETINtoMAXMIN(
+      String toAdd, Emitter<String> emit) async {
+    final response = await Dio().post(
+      server + 'GETINtoMAXMIN',
+      data: {
+        "PO": FIRSTUI.POACTIVE,
+        "CP": FIRSTUI.CPACTIVE,
+        "USER": USERDATA.NAME,
+        "USERID": USERDATA.ID,
+      },
+    );
+    String output = '';
+    if (response.statusCode == 200) {
+      var databuff = response.data;
+      print(databuff);
       if (databuff.toString() == 'OK') {
         output = 'OK';
       } else {

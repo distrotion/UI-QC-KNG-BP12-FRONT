@@ -174,7 +174,7 @@ class ReportPDFCommon_Cubit extends Cubit<CommonReportOutput> {
                 SPECIFICATION: SPECIFICATION,
                 RESULT: SPECIFICATION,
                 LOAD: LOAD,
-                SRAWDATA: "",
+                SRAWDATA: SRAWDATA,
               ));
             }
             // }
@@ -198,7 +198,10 @@ class ReportPDFCommon_Cubit extends Cubit<CommonReportOutput> {
           PARTNAME: BasicDATAr['PARTNAME'] != null
               ? BasicDATAr['PARTNAME'].toString()
               : '',
-          PARTNO:
+          PARTNO: BasicDATAr['PART_s'] != null
+              ? BasicDATAr['PART_s'].toString()
+              : '',
+          PARTNO_s:
               BasicDATAr['PART'] != null ? BasicDATAr['PART'].toString() : '',
           CUSLOT: BasicDATAr['CUSLOT'] != null
               ? BasicDATAr['CUSLOT'].toString()
@@ -337,36 +340,65 @@ class ReportPDFCommon_Cubit extends Cubit<CommonReportOutput> {
           }
         }
 
-        if (SPLIT != 'SPLIT') {
-          final response02 = await Dio().post(
-            server + "BP12KNG_Report_by_ref",
-            data: {
-              // "PO": BasicDATAr['ReferFrom'].toString(),
-              "PO": BasicDATAr['ReferFrom'] != null
-                  ? BasicDATAr['ReferFrom'].toString()
-                  : BasicDATAr['PO'].toString(),
-            },
-          );
+        // if (SPLIT != 'SPLIT') {
+        final response02 = await Dio().post(
+          server + "BP12KNG_Report_by_ref",
+          data: {
+            // "PO": BasicDATAr['ReferFrom'].toString(),
+            "PO": BasicDATAr['ReferFrom'] != null
+                ? BasicDATAr['ReferFrom'].toString()
+                : BasicDATAr['PO'].toString(),
+            // "Group": BasicDATAr['Group'] ?? '',
+          },
+        );
 
-          if (response02.statusCode == 200) {
-            var databuffref = response02.data;
+        if (response02.statusCode == 200) {
+          var databuffref = response02.data;
 
-            double qty = 0;
+          double qty = 0;
 
-            if (databuffref['DATAlist'].length > 0) {
-              // print(databuffref['DATAlist']);
-              if (databuffref['DATA'].length > 0) {
-                BasicCommonDATAs.TPKLOT =
-                    databuffref['DATA']?[0]['TPKLOT'].toString() ?? '';
+          if (databuffref['DATAlist'].length > 0) {
+            // print(databuffref['DATAlist']);
+            if (databuffref['DATA'].length > 0) {
+              // BasicCommonDATAs.TPKLOT =
+              //     databuffref['DATA']?[0]['TPKLOT'].toString() ?? '';
 
-                BasicCommonDATAs.CUSLOT =
-                    databuffref['DATA']?[0]['CUSLOT'].toString() ?? '';
+              // BasicCommonDATAs.CUSLOT =
+              //     databuffref['DATA']?[0]['CUSLOT'].toString() ?? '';
 
-                qty = double.parse(ConverstStr(
-                    databuffref['DATA']?[0]['QTY'].toString() ?? ''));
+              // qty = double.parse(
+              //     ConverstStr(databuffref['DATA']?[0]['QTY'].toString() ?? ''));
 
-                List<String> lotlist = [];
-                for (var p = 0; p < databuffref['DATAlist'].length; p++) {
+              BasicCommonDATAs.TPKLOT = BasicDATAr['TPKLOT'].toString() ?? '';
+
+              BasicCommonDATAs.CUSLOT = BasicDATAr['CUSLOT'].toString() ?? '';
+
+              qty =
+                  double.parse(ConverstStr(BasicDATAr['QTY'].toString() ?? ''));
+
+              List<String> lotlist = [];
+              for (var p = 0; p < databuffref['DATAlist'].length; p++) {
+                String groupM = BasicDATAr['Group'] != null
+                    ? BasicDATAr['Group'].toString()
+                    : '';
+
+                String groupI = databuffref['DATAlist']![p]['Group'] != null
+                    ? databuffref['DATAlist']![p]['Group'].toString()
+                    : "";
+
+                String POR = BasicDATAr['ReferFrom'] != null
+                    ? BasicDATAr['ReferFrom'].toString()
+                    : "";
+
+                String POO = databuffref['DATAlist']![p]['PO'] != null
+                    ? databuffref['DATAlist']![p]['PO'].toString()
+                    : "";
+                if ((groupM == groupI) && (POR != POO) && (POO != PO)) {
+                  print("--------->>");
+                  print(groupM);
+                  print(groupI);
+                  print("--------->>");
+
                   String lastst =
                       databuffref['DATAlist']?[p]['TPKLOT'].toString() ?? '';
                   // BasicCommonDATAs.TPKLOT = BasicCommonDATAs.TPKLOT +
@@ -385,35 +417,39 @@ class ReportPDFCommon_Cubit extends Cubit<CommonReportOutput> {
                   qty = qty +
                       double.parse(ConverstStr(
                           databuffref['DATAlist']?[p]['QTY'].toString() ?? ''));
+
+                  print(lotlist);
+
+                  lotlist = lotlist..sort();
                 }
-                lotlist = lotlist..sort();
-                BasicCommonDATAs.TPKLOT = BasicCommonDATAs.TPKLOT +
-                    ',' +
-                    lotlist.toString().replaceAll("]", "").replaceAll("[", "");
-                BasicCommonDATAs.QTY = qty.toString();
               }
+              BasicCommonDATAs.TPKLOT = BasicCommonDATAs.TPKLOT +
+                  ',' +
+                  lotlist.toString().replaceAll("]", "").replaceAll("[", "");
+              BasicCommonDATAs.QTY = qty.toString();
             }
-            // print(qty);
-            BasicCommonDATAs.CUSLOT =
-                BasicCommonDATAs.CUSLOT.replaceAll(",,", ",");
-            List<String> datalist = BasicCommonDATAs.CUSLOT.split(",");
-            BasicCommonDATAs.CUSLOT = datalist
-                .toSet()
-                .toString()
-                .replaceAll("}", "")
-                .replaceAll("{", "");
-            // BasicCommonDATAs.PARTNAMEref =
-            //     databuffref['DATA']?[0]['PARTNAME'].toString() ?? '';
-            // BasicCommonDATAs.PARTref =
-            //     databuffref['DATA']?[0]['PART'].toString() ?? '';
-            // BasicCommonDATAs.TPKLOTref =
-            //     databuffref['DATA']?[0]['TPKLOT'].toString() ?? '';
-            // BasicCommonDATAs.TPKLOT =
-            //     BasicCommonDATAs.TPKLOT + "," + BasicCommonDATAs.TPKLOTref;
-            // print(databuffref['DATA']?[0]['PART']);
-            // print(databuffref['DATA']?[0]['PARTNAME']);
           }
+          // print(qty);
+          BasicCommonDATAs.CUSLOT =
+              BasicCommonDATAs.CUSLOT.replaceAll(",,", ",");
+          List<String> datalist = BasicCommonDATAs.CUSLOT.split(",");
+          BasicCommonDATAs.CUSLOT = datalist
+              .toSet()
+              .toString()
+              .replaceAll("}", "")
+              .replaceAll("{", "");
+          // BasicCommonDATAs.PARTNAMEref =
+          //     databuffref['DATA']?[0]['PARTNAME'].toString() ?? '';
+          // BasicCommonDATAs.PARTref =
+          //     databuffref['DATA']?[0]['PART'].toString() ?? '';
+          // BasicCommonDATAs.TPKLOTref =
+          //     databuffref['DATA']?[0]['TPKLOT'].toString() ?? '';
+          // BasicCommonDATAs.TPKLOT =
+          //     BasicCommonDATAs.TPKLOT + "," + BasicCommonDATAs.TPKLOTref;
+          // print(databuffref['DATA']?[0]['PART']);
+          // print(databuffref['DATA']?[0]['PARTNAME']);
         }
+        // }
 
         // print(PATTERNlist['FINAL'].length);
 
@@ -502,7 +538,7 @@ class ReportPDFCommon_Cubit extends Cubit<CommonReportOutput> {
                       SPECIFICATION: SPECIFICATION,
                       RESULT: SPECIFICATION,
                       LOAD: LOAD,
-                      SRAWDATA: "",
+                      SRAWDATA: SRAWDATA,
                     ));
                   }
                 }
@@ -2124,7 +2160,7 @@ class ReportPDFCommon_Cubit extends Cubit<CommonReportOutput> {
                           (double.parse(ConverstStr(reslp))).toStringAsFixed(2),
                       LOAD: LOAD,
                       Cross: reslpCross,
-                      SRAWDATA: "",
+                      SRAWDATA: SRAWDATA,
                     ));
                   }
                 }
@@ -2637,7 +2673,7 @@ class ReportPDFCommon_Cubit extends Cubit<CommonReportOutput> {
                       datapackset: listdataset,
                       RESULT: "Good",
                       LOAD: LOAD,
-                      SRAWDATA: "",
+                      SRAWDATA: SRAWDATA,
                       // Remark: remark,
                     ));
                   }
@@ -4392,6 +4428,7 @@ class BasicCommonDATA {
     this.PROCESS = '',
     this.PARTNAME = '',
     this.PARTNO = '',
+    this.PARTNO_s = '',
     this.CUSLOT = '',
     this.TPKLOT = '',
     this.MATERIAL = '',
@@ -4430,6 +4467,7 @@ class BasicCommonDATA {
   String PROCESS;
   String PARTNAME;
   String PARTNO;
+  String PARTNO_s;
   String CUSLOT;
   String TPKLOT;
   String MATERIAL;

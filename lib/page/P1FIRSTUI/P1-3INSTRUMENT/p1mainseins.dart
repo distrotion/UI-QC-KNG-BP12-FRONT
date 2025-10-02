@@ -14,6 +14,7 @@ import '../../page12.dart';
 import '../../page13.dart';
 import '../../page14.dart';
 import '../../page17.dart';
+import '../../page19.dart';
 import '../../page2.dart';
 import '../../page3.dart';
 
@@ -112,6 +113,9 @@ class SELECtINSTRUMENTbody extends StatelessWidget {
       } else if (FIRSTUI.SECLECTins == 'DSA-01') {
         CuPage = Page13();
         MainBodyContext.read<ChangePage_Bloc>().add(ChangePage_nodrower());
+      } else if (FIRSTUI.SECLECTins == 'MAXMIN') {
+        CuPage = Page19();
+        MainBodyContext.read<ChangePage_Bloc>().add(ChangePage_nodrower());
       }
     } else {
       if (FIRSTUI.SECLECTins != '') {
@@ -132,6 +136,8 @@ class SELECtINSTRUMENTbody extends StatelessWidget {
         } else if (FIRSTUI.SECLECTins == 'SPLINEGAUGE') {
           FIRSTUI.INSnotREADY[FIRSTUI.INSint] = 1;
         } else if (FIRSTUI.SECLECTins == 'DSA-01') {
+          FIRSTUI.INSnotREADY[FIRSTUI.INSint] = 1;
+        } else if (FIRSTUI.SECLECTins == 'MAXMIN') {
           FIRSTUI.INSnotREADY[FIRSTUI.INSint] = 1;
         }
 
@@ -235,7 +241,7 @@ class SELECtINSTRUMENTbody extends StatelessWidget {
               height: 320,
               child: SingleChildScrollView(
                 child: SizedBox(
-                  height: 450,
+                  height: 600,
                   child: Column(
                     children: [
                       for (int i = 0; i < _INSlist.length; i++)
@@ -292,6 +298,11 @@ class SELECtINSTRUMENTbody extends StatelessWidget {
                                 context
                                     .read<TRICKERMASTER_Bloc>()
                                     .add(TRICKERMASTER_GETINtoDSA01());
+                              }
+                              if (_INSlist[i] == 'MAXMIN') {
+                                context
+                                    .read<TRICKERMASTER_Bloc>()
+                                    .add(TRICKERMASTER_GETINtoMAXMIN());
                               }
                             },
                             child: INSBOX(

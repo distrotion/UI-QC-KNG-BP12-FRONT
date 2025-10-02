@@ -100,6 +100,7 @@ class _ReportPDFCommonState extends State<ReportPDFCommon> {
       ReportPDFCommonvar.PROCESS = _dataCOMMON.databasic.PROCESS;
       ReportPDFCommonvar.PARTNAME = _dataCOMMON.databasic.PARTNAME;
       ReportPDFCommonvar.PARTNO = _dataCOMMON.databasic.PARTNO;
+      ReportPDFCommonvar.PARTNO_s = _dataCOMMON.databasic.PARTNO_s;
       ReportPDFCommonvar.CUSLOT = _dataCOMMON.databasic.CUSLOT;
       ReportPDFCommonvar.TPKLOT = _dataCOMMON.databasic.TPKLOT;
       ReportPDFCommonvar.MATERIAL = _dataCOMMON.databasic.MATERIAL;
@@ -179,8 +180,9 @@ class _ReportPDFCommonState extends State<ReportPDFCommon> {
         // print(_dataCOMMON.datain[i].ITEMname);
         // print(_dataCOMMON.datain[i].datapackset);
         // if (_dataCOMMON.datain[i].datapackset.length > 1) {
-        if (_dataCOMMON.datain[i].ITEMname.contains('Thickness') ||
-            _dataCOMMON.datain[i].ITEMname.contains('thickness')) {
+        if ((_dataCOMMON.datain[i].ITEMname.contains('Thickness') ||
+                _dataCOMMON.datain[i].ITEMname.contains('thickness')) &&
+            _dataCOMMON.datain[i].ITEMname.contains('Max') == false) {
           tickness = _dataCOMMON.datain[i].ITEMname;
           // print(_dataCOMMON.datain[i].ITEMname);
           // print(_dataCOMMON.datain[i].datapackset);
@@ -343,164 +345,165 @@ class _ReportPDFCommonState extends State<ReportPDFCommon> {
         // }
 
         //Compound Layer
-        if (_dataCOMMON.datain[i].datapackset.length > 1) {
-          if (_dataCOMMON.datain[i].ITEMname.contains('Scratch') ||
-              _dataCOMMON.datain[i].ITEMname.contains('scratch') ||
-              _dataCOMMON.datain[i].ITEMname.contains('-x')) {
-            ReportPDFCommonvar.commp = _dataCOMMON.datain[i].ITEMname;
-            SCT = _dataCOMMON.datain[i].ITEMname;
+        // if (_dataCOMMON.datain[i].datapackset.length > 1) {
+        if (_dataCOMMON.datain[i].ITEMname.contains('Scratch') ||
+            _dataCOMMON.datain[i].ITEMname.contains('scratch') ||
+            _dataCOMMON.datain[i].ITEMname.contains('-x')) {
+          ReportPDFCommonvar.commp = _dataCOMMON.datain[i].ITEMname;
+          SCT = _dataCOMMON.datain[i].ITEMname;
+          print("----------->>>SC");
 
-            for (var li = 0;
-                li < _dataCOMMON.datain[i].datapackset.length;
-                li++) {
-              // print(_dataCOMMON.datain[i].datapackset[li].dimensionX);
-              // print(_dataCOMMON.datain[i].datapackset[li].dimensionY);
+          for (var li = 0;
+              li < _dataCOMMON.datain[i].datapackset.length;
+              li++) {
+            // print(_dataCOMMON.datain[i].datapackset[li].dimensionX);
+            // print(_dataCOMMON.datain[i].datapackset[li].dimensionY);
 
-              if (_dataCOMMON.datain[i].datapackset[li].dimensionX == 0) {}
-              if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 1) {
-                ReportPDFCommonvar.rawlistCompound.add(rawlist(
-                  DATANO: CompoundNO.toString(),
-                  DATAPCS: '1',
-                  DATA: _dataCOMMON.datain[i].datapackset[li].DATA01,
-                ));
-              }
-              if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 2) {
-                ReportPDFCommonvar.rawlistCompound.add(rawlist(
-                  DATANO: CompoundNO.toString(),
-                  DATAPCS: '2',
-                  DATA: _dataCOMMON.datain[i].datapackset[li].DATA02,
-                ));
-              }
-              if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 3) {
-                ReportPDFCommonvar.rawlistCompound.add(rawlist(
-                  DATANO: CompoundNO.toString(),
-                  DATAPCS: '3',
-                  DATA: _dataCOMMON.datain[i].datapackset[li].DATA03,
-                ));
-              }
-              if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 4) {
-                ReportPDFCommonvar.rawlistCompound.add(rawlist(
-                  DATANO: CompoundNO.toString(),
-                  DATAPCS: '4',
-                  DATA: _dataCOMMON.datain[i].datapackset[li].DATA04,
-                ));
-              }
-              if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 5) {
-                ReportPDFCommonvar.rawlistCompound.add(rawlist(
-                  DATANO: CompoundNO.toString(),
-                  DATAPCS: '5',
-                  DATA: _dataCOMMON.datain[i].datapackset[li].DATA05,
-                ));
-              }
-              if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 6) {
-                ReportPDFCommonvar.rawlistCompound.add(rawlist(
-                  DATANO: CompoundNO.toString(),
-                  DATAPCS: '6',
-                  DATA: _dataCOMMON.datain[i].datapackset[li].DATA06,
-                ));
-              }
-              if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 7) {
-                ReportPDFCommonvar.rawlistCompound.add(rawlist(
-                  DATANO: CompoundNO.toString(),
-                  DATAPCS: '7',
-                  DATA: _dataCOMMON.datain[i].datapackset[li].DATA07,
-                ));
-              }
-              if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 8) {
-                ReportPDFCommonvar.rawlistCompound.add(rawlist(
-                  DATANO: CompoundNO.toString(),
-                  DATAPCS: '8',
-                  DATA: _dataCOMMON.datain[i].datapackset[li].DATA08,
-                ));
-              }
-              if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 9) {
-                ReportPDFCommonvar.rawlistCompound.add(rawlist(
-                  DATANO: CompoundNO.toString(),
-                  DATAPCS: '9',
-                  DATA: _dataCOMMON.datain[i].datapackset[li].DATA09,
-                ));
-              }
-              if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 10) {
-                ReportPDFCommonvar.rawlistCompound.add(rawlist(
-                  DATANO: CompoundNO.toString(),
-                  DATAPCS: '10',
-                  DATA: _dataCOMMON.datain[i].datapackset[li].DATA10,
-                ));
-              }
-              if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 11) {
-                ReportPDFCommonvar.rawlistCompound.add(rawlist(
-                  DATANO: CompoundNO.toString(),
-                  DATAPCS: '11',
-                  DATA: _dataCOMMON.datain[i].datapackset[li].DATA11,
-                ));
-              }
-              if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 12) {
-                ReportPDFCommonvar.rawlistCompound.add(rawlist(
-                  DATANO: CompoundNO.toString(),
-                  DATAPCS: '12',
-                  DATA: _dataCOMMON.datain[i].datapackset[li].DATA12,
-                ));
-              }
-              if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 13) {
-                ReportPDFCommonvar.rawlistCompound.add(rawlist(
-                  DATANO: CompoundNO.toString(),
-                  DATAPCS: '13',
-                  DATA: _dataCOMMON.datain[i].datapackset[li].DATA13,
-                ));
-              }
-              if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 14) {
-                ReportPDFCommonvar.rawlistCompound.add(rawlist(
-                  DATANO: CompoundNO.toString(),
-                  DATAPCS: '14',
-                  DATA: _dataCOMMON.datain[i].datapackset[li].DATA14,
-                ));
-              }
-              if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 15) {
-                ReportPDFCommonvar.rawlistCompound.add(rawlist(
-                  DATANO: CompoundNO.toString(),
-                  DATAPCS: '15',
-                  DATA: _dataCOMMON.datain[i].datapackset[li].DATA15,
-                ));
-              }
-              if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 16) {
-                ReportPDFCommonvar.rawlistCompound.add(rawlist(
-                  DATANO: CompoundNO.toString(),
-                  DATAPCS: '16',
-                  DATA: _dataCOMMON.datain[i].datapackset[li].DATA16,
-                ));
-              }
-              if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 17) {
-                ReportPDFCommonvar.rawlistCompound.add(rawlist(
-                  DATANO: CompoundNO.toString(),
-                  DATAPCS: '17',
-                  DATA: _dataCOMMON.datain[i].datapackset[li].DATA17,
-                ));
-              }
-              if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 18) {
-                ReportPDFCommonvar.rawlistCompound.add(rawlist(
-                  DATANO: CompoundNO.toString(),
-                  DATAPCS: '18',
-                  DATA: _dataCOMMON.datain[i].datapackset[li].DATA18,
-                ));
-              }
-              if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 19) {
-                ReportPDFCommonvar.rawlistCompound.add(rawlist(
-                  DATANO: CompoundNO.toString(),
-                  DATAPCS: '19',
-                  DATA: _dataCOMMON.datain[i].datapackset[li].DATA19,
-                ));
-              }
-              if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 20) {
-                ReportPDFCommonvar.rawlistCompound.add(rawlist(
-                  DATANO: CompoundNO.toString(),
-                  DATAPCS: '20',
-                  DATA: _dataCOMMON.datain[i].datapackset[li].DATA20,
-                ));
-              }
-              CompoundNO++;
+            if (_dataCOMMON.datain[i].datapackset[li].dimensionX == 0) {}
+            if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 1) {
+              ReportPDFCommonvar.rawlistCompound.add(rawlist(
+                DATANO: CompoundNO.toString(),
+                DATAPCS: '1',
+                DATA: _dataCOMMON.datain[i].datapackset[li].DATA01,
+              ));
             }
+            if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 2) {
+              ReportPDFCommonvar.rawlistCompound.add(rawlist(
+                DATANO: CompoundNO.toString(),
+                DATAPCS: '2',
+                DATA: _dataCOMMON.datain[i].datapackset[li].DATA02,
+              ));
+            }
+            if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 3) {
+              ReportPDFCommonvar.rawlistCompound.add(rawlist(
+                DATANO: CompoundNO.toString(),
+                DATAPCS: '3',
+                DATA: _dataCOMMON.datain[i].datapackset[li].DATA03,
+              ));
+            }
+            if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 4) {
+              ReportPDFCommonvar.rawlistCompound.add(rawlist(
+                DATANO: CompoundNO.toString(),
+                DATAPCS: '4',
+                DATA: _dataCOMMON.datain[i].datapackset[li].DATA04,
+              ));
+            }
+            if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 5) {
+              ReportPDFCommonvar.rawlistCompound.add(rawlist(
+                DATANO: CompoundNO.toString(),
+                DATAPCS: '5',
+                DATA: _dataCOMMON.datain[i].datapackset[li].DATA05,
+              ));
+            }
+            if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 6) {
+              ReportPDFCommonvar.rawlistCompound.add(rawlist(
+                DATANO: CompoundNO.toString(),
+                DATAPCS: '6',
+                DATA: _dataCOMMON.datain[i].datapackset[li].DATA06,
+              ));
+            }
+            if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 7) {
+              ReportPDFCommonvar.rawlistCompound.add(rawlist(
+                DATANO: CompoundNO.toString(),
+                DATAPCS: '7',
+                DATA: _dataCOMMON.datain[i].datapackset[li].DATA07,
+              ));
+            }
+            if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 8) {
+              ReportPDFCommonvar.rawlistCompound.add(rawlist(
+                DATANO: CompoundNO.toString(),
+                DATAPCS: '8',
+                DATA: _dataCOMMON.datain[i].datapackset[li].DATA08,
+              ));
+            }
+            if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 9) {
+              ReportPDFCommonvar.rawlistCompound.add(rawlist(
+                DATANO: CompoundNO.toString(),
+                DATAPCS: '9',
+                DATA: _dataCOMMON.datain[i].datapackset[li].DATA09,
+              ));
+            }
+            if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 10) {
+              ReportPDFCommonvar.rawlistCompound.add(rawlist(
+                DATANO: CompoundNO.toString(),
+                DATAPCS: '10',
+                DATA: _dataCOMMON.datain[i].datapackset[li].DATA10,
+              ));
+            }
+            if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 11) {
+              ReportPDFCommonvar.rawlistCompound.add(rawlist(
+                DATANO: CompoundNO.toString(),
+                DATAPCS: '11',
+                DATA: _dataCOMMON.datain[i].datapackset[li].DATA11,
+              ));
+            }
+            if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 12) {
+              ReportPDFCommonvar.rawlistCompound.add(rawlist(
+                DATANO: CompoundNO.toString(),
+                DATAPCS: '12',
+                DATA: _dataCOMMON.datain[i].datapackset[li].DATA12,
+              ));
+            }
+            if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 13) {
+              ReportPDFCommonvar.rawlistCompound.add(rawlist(
+                DATANO: CompoundNO.toString(),
+                DATAPCS: '13',
+                DATA: _dataCOMMON.datain[i].datapackset[li].DATA13,
+              ));
+            }
+            if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 14) {
+              ReportPDFCommonvar.rawlistCompound.add(rawlist(
+                DATANO: CompoundNO.toString(),
+                DATAPCS: '14',
+                DATA: _dataCOMMON.datain[i].datapackset[li].DATA14,
+              ));
+            }
+            if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 15) {
+              ReportPDFCommonvar.rawlistCompound.add(rawlist(
+                DATANO: CompoundNO.toString(),
+                DATAPCS: '15',
+                DATA: _dataCOMMON.datain[i].datapackset[li].DATA15,
+              ));
+            }
+            if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 16) {
+              ReportPDFCommonvar.rawlistCompound.add(rawlist(
+                DATANO: CompoundNO.toString(),
+                DATAPCS: '16',
+                DATA: _dataCOMMON.datain[i].datapackset[li].DATA16,
+              ));
+            }
+            if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 17) {
+              ReportPDFCommonvar.rawlistCompound.add(rawlist(
+                DATANO: CompoundNO.toString(),
+                DATAPCS: '17',
+                DATA: _dataCOMMON.datain[i].datapackset[li].DATA17,
+              ));
+            }
+            if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 18) {
+              ReportPDFCommonvar.rawlistCompound.add(rawlist(
+                DATANO: CompoundNO.toString(),
+                DATAPCS: '18',
+                DATA: _dataCOMMON.datain[i].datapackset[li].DATA18,
+              ));
+            }
+            if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 19) {
+              ReportPDFCommonvar.rawlistCompound.add(rawlist(
+                DATANO: CompoundNO.toString(),
+                DATAPCS: '19',
+                DATA: _dataCOMMON.datain[i].datapackset[li].DATA19,
+              ));
+            }
+            if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 20) {
+              ReportPDFCommonvar.rawlistCompound.add(rawlist(
+                DATANO: CompoundNO.toString(),
+                DATAPCS: '20',
+                DATA: _dataCOMMON.datain[i].datapackset[li].DATA20,
+              ));
+            }
+            CompoundNO++;
           }
         }
+        // }
         // }
         // Roughness
 
@@ -674,156 +677,158 @@ class _ReportPDFCommonState extends State<ReportPDFCommon> {
             }
           }
         } else if (_dataCOMMON.datain[i].ITEMname.contains('Hardness')) {
-          SCT = _dataCOMMON.datain[i].ITEMname;
+          if (_dataCOMMON.datain[i].SRAWDATA != 'NO') {
+            SCT = _dataCOMMON.datain[i].ITEMname;
 
-          for (var li = 0;
-              li < _dataCOMMON.datain[i].datapackset.length;
-              li++) {
-            // print(_dataCOMMON.datain[i].datapackset[li].dimensionX);
-            // print(_dataCOMMON.datain[i].datapackset[li].dimensionY);
+            for (var li = 0;
+                li < _dataCOMMON.datain[i].datapackset.length;
+                li++) {
+              // print(_dataCOMMON.datain[i].datapackset[li].dimensionX);
+              // print(_dataCOMMON.datain[i].datapackset[li].dimensionY);
 
-            if (_dataCOMMON.datain[i].datapackset[li].dimensionX == 0) {}
-            if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 1) {
-              ReportPDFCommonvar.rawlistCompound.add(rawlist(
-                DATANO: CompoundNO.toString(),
-                DATAPCS: '1',
-                DATA: _dataCOMMON.datain[i].datapackset[li].DATA01,
-              ));
+              if (_dataCOMMON.datain[i].datapackset[li].dimensionX == 0) {}
+              if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 1) {
+                ReportPDFCommonvar.rawlistCompound.add(rawlist(
+                  DATANO: CompoundNO.toString(),
+                  DATAPCS: '1',
+                  DATA: _dataCOMMON.datain[i].datapackset[li].DATA01,
+                ));
+              }
+              if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 2) {
+                ReportPDFCommonvar.rawlistCompound.add(rawlist(
+                  DATANO: CompoundNO.toString(),
+                  DATAPCS: '2',
+                  DATA: _dataCOMMON.datain[i].datapackset[li].DATA02,
+                ));
+              }
+              if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 3) {
+                ReportPDFCommonvar.rawlistCompound.add(rawlist(
+                  DATANO: CompoundNO.toString(),
+                  DATAPCS: '3',
+                  DATA: _dataCOMMON.datain[i].datapackset[li].DATA03,
+                ));
+              }
+              if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 4) {
+                ReportPDFCommonvar.rawlistCompound.add(rawlist(
+                  DATANO: CompoundNO.toString(),
+                  DATAPCS: '4',
+                  DATA: _dataCOMMON.datain[i].datapackset[li].DATA04,
+                ));
+              }
+              if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 5) {
+                ReportPDFCommonvar.rawlistCompound.add(rawlist(
+                  DATANO: CompoundNO.toString(),
+                  DATAPCS: '5',
+                  DATA: _dataCOMMON.datain[i].datapackset[li].DATA05,
+                ));
+              }
+              if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 6) {
+                ReportPDFCommonvar.rawlistCompound.add(rawlist(
+                  DATANO: CompoundNO.toString(),
+                  DATAPCS: '6',
+                  DATA: _dataCOMMON.datain[i].datapackset[li].DATA06,
+                ));
+              }
+              if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 7) {
+                ReportPDFCommonvar.rawlistCompound.add(rawlist(
+                  DATANO: CompoundNO.toString(),
+                  DATAPCS: '7',
+                  DATA: _dataCOMMON.datain[i].datapackset[li].DATA07,
+                ));
+              }
+              if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 8) {
+                ReportPDFCommonvar.rawlistCompound.add(rawlist(
+                  DATANO: CompoundNO.toString(),
+                  DATAPCS: '8',
+                  DATA: _dataCOMMON.datain[i].datapackset[li].DATA08,
+                ));
+              }
+              if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 9) {
+                ReportPDFCommonvar.rawlistCompound.add(rawlist(
+                  DATANO: CompoundNO.toString(),
+                  DATAPCS: '9',
+                  DATA: _dataCOMMON.datain[i].datapackset[li].DATA09,
+                ));
+              }
+              if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 10) {
+                ReportPDFCommonvar.rawlistCompound.add(rawlist(
+                  DATANO: CompoundNO.toString(),
+                  DATAPCS: '10',
+                  DATA: _dataCOMMON.datain[i].datapackset[li].DATA10,
+                ));
+              }
+              if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 11) {
+                ReportPDFCommonvar.rawlistCompound.add(rawlist(
+                  DATANO: CompoundNO.toString(),
+                  DATAPCS: '11',
+                  DATA: _dataCOMMON.datain[i].datapackset[li].DATA11,
+                ));
+              }
+              if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 12) {
+                ReportPDFCommonvar.rawlistCompound.add(rawlist(
+                  DATANO: CompoundNO.toString(),
+                  DATAPCS: '12',
+                  DATA: _dataCOMMON.datain[i].datapackset[li].DATA12,
+                ));
+              }
+              if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 13) {
+                ReportPDFCommonvar.rawlistCompound.add(rawlist(
+                  DATANO: CompoundNO.toString(),
+                  DATAPCS: '13',
+                  DATA: _dataCOMMON.datain[i].datapackset[li].DATA13,
+                ));
+              }
+              if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 14) {
+                ReportPDFCommonvar.rawlistCompound.add(rawlist(
+                  DATANO: CompoundNO.toString(),
+                  DATAPCS: '14',
+                  DATA: _dataCOMMON.datain[i].datapackset[li].DATA14,
+                ));
+              }
+              if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 15) {
+                ReportPDFCommonvar.rawlistCompound.add(rawlist(
+                  DATANO: CompoundNO.toString(),
+                  DATAPCS: '15',
+                  DATA: _dataCOMMON.datain[i].datapackset[li].DATA15,
+                ));
+              }
+              if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 16) {
+                ReportPDFCommonvar.rawlistCompound.add(rawlist(
+                  DATANO: CompoundNO.toString(),
+                  DATAPCS: '16',
+                  DATA: _dataCOMMON.datain[i].datapackset[li].DATA16,
+                ));
+              }
+              if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 17) {
+                ReportPDFCommonvar.rawlistCompound.add(rawlist(
+                  DATANO: CompoundNO.toString(),
+                  DATAPCS: '17',
+                  DATA: _dataCOMMON.datain[i].datapackset[li].DATA17,
+                ));
+              }
+              if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 18) {
+                ReportPDFCommonvar.rawlistCompound.add(rawlist(
+                  DATANO: CompoundNO.toString(),
+                  DATAPCS: '18',
+                  DATA: _dataCOMMON.datain[i].datapackset[li].DATA18,
+                ));
+              }
+              if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 19) {
+                ReportPDFCommonvar.rawlistCompound.add(rawlist(
+                  DATANO: CompoundNO.toString(),
+                  DATAPCS: '19',
+                  DATA: _dataCOMMON.datain[i].datapackset[li].DATA19,
+                ));
+              }
+              if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 20) {
+                ReportPDFCommonvar.rawlistCompound.add(rawlist(
+                  DATANO: CompoundNO.toString(),
+                  DATAPCS: '20',
+                  DATA: _dataCOMMON.datain[i].datapackset[li].DATA20,
+                ));
+              }
+              CompoundNO++;
             }
-            if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 2) {
-              ReportPDFCommonvar.rawlistCompound.add(rawlist(
-                DATANO: CompoundNO.toString(),
-                DATAPCS: '2',
-                DATA: _dataCOMMON.datain[i].datapackset[li].DATA02,
-              ));
-            }
-            if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 3) {
-              ReportPDFCommonvar.rawlistCompound.add(rawlist(
-                DATANO: CompoundNO.toString(),
-                DATAPCS: '3',
-                DATA: _dataCOMMON.datain[i].datapackset[li].DATA03,
-              ));
-            }
-            if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 4) {
-              ReportPDFCommonvar.rawlistCompound.add(rawlist(
-                DATANO: CompoundNO.toString(),
-                DATAPCS: '4',
-                DATA: _dataCOMMON.datain[i].datapackset[li].DATA04,
-              ));
-            }
-            if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 5) {
-              ReportPDFCommonvar.rawlistCompound.add(rawlist(
-                DATANO: CompoundNO.toString(),
-                DATAPCS: '5',
-                DATA: _dataCOMMON.datain[i].datapackset[li].DATA05,
-              ));
-            }
-            if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 6) {
-              ReportPDFCommonvar.rawlistCompound.add(rawlist(
-                DATANO: CompoundNO.toString(),
-                DATAPCS: '6',
-                DATA: _dataCOMMON.datain[i].datapackset[li].DATA06,
-              ));
-            }
-            if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 7) {
-              ReportPDFCommonvar.rawlistCompound.add(rawlist(
-                DATANO: CompoundNO.toString(),
-                DATAPCS: '7',
-                DATA: _dataCOMMON.datain[i].datapackset[li].DATA07,
-              ));
-            }
-            if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 8) {
-              ReportPDFCommonvar.rawlistCompound.add(rawlist(
-                DATANO: CompoundNO.toString(),
-                DATAPCS: '8',
-                DATA: _dataCOMMON.datain[i].datapackset[li].DATA08,
-              ));
-            }
-            if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 9) {
-              ReportPDFCommonvar.rawlistCompound.add(rawlist(
-                DATANO: CompoundNO.toString(),
-                DATAPCS: '9',
-                DATA: _dataCOMMON.datain[i].datapackset[li].DATA09,
-              ));
-            }
-            if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 10) {
-              ReportPDFCommonvar.rawlistCompound.add(rawlist(
-                DATANO: CompoundNO.toString(),
-                DATAPCS: '10',
-                DATA: _dataCOMMON.datain[i].datapackset[li].DATA10,
-              ));
-            }
-            if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 11) {
-              ReportPDFCommonvar.rawlistCompound.add(rawlist(
-                DATANO: CompoundNO.toString(),
-                DATAPCS: '11',
-                DATA: _dataCOMMON.datain[i].datapackset[li].DATA11,
-              ));
-            }
-            if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 12) {
-              ReportPDFCommonvar.rawlistCompound.add(rawlist(
-                DATANO: CompoundNO.toString(),
-                DATAPCS: '12',
-                DATA: _dataCOMMON.datain[i].datapackset[li].DATA12,
-              ));
-            }
-            if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 13) {
-              ReportPDFCommonvar.rawlistCompound.add(rawlist(
-                DATANO: CompoundNO.toString(),
-                DATAPCS: '13',
-                DATA: _dataCOMMON.datain[i].datapackset[li].DATA13,
-              ));
-            }
-            if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 14) {
-              ReportPDFCommonvar.rawlistCompound.add(rawlist(
-                DATANO: CompoundNO.toString(),
-                DATAPCS: '14',
-                DATA: _dataCOMMON.datain[i].datapackset[li].DATA14,
-              ));
-            }
-            if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 15) {
-              ReportPDFCommonvar.rawlistCompound.add(rawlist(
-                DATANO: CompoundNO.toString(),
-                DATAPCS: '15',
-                DATA: _dataCOMMON.datain[i].datapackset[li].DATA15,
-              ));
-            }
-            if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 16) {
-              ReportPDFCommonvar.rawlistCompound.add(rawlist(
-                DATANO: CompoundNO.toString(),
-                DATAPCS: '16',
-                DATA: _dataCOMMON.datain[i].datapackset[li].DATA16,
-              ));
-            }
-            if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 17) {
-              ReportPDFCommonvar.rawlistCompound.add(rawlist(
-                DATANO: CompoundNO.toString(),
-                DATAPCS: '17',
-                DATA: _dataCOMMON.datain[i].datapackset[li].DATA17,
-              ));
-            }
-            if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 18) {
-              ReportPDFCommonvar.rawlistCompound.add(rawlist(
-                DATANO: CompoundNO.toString(),
-                DATAPCS: '18',
-                DATA: _dataCOMMON.datain[i].datapackset[li].DATA18,
-              ));
-            }
-            if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 19) {
-              ReportPDFCommonvar.rawlistCompound.add(rawlist(
-                DATANO: CompoundNO.toString(),
-                DATAPCS: '19',
-                DATA: _dataCOMMON.datain[i].datapackset[li].DATA19,
-              ));
-            }
-            if (_dataCOMMON.datain[i].datapackset[li].dimensionX >= 20) {
-              ReportPDFCommonvar.rawlistCompound.add(rawlist(
-                DATANO: CompoundNO.toString(),
-                DATAPCS: '20',
-                DATA: _dataCOMMON.datain[i].datapackset[li].DATA20,
-              ));
-            }
-            CompoundNO++;
           }
         }
       }
@@ -836,6 +841,7 @@ class _ReportPDFCommonState extends State<ReportPDFCommon> {
       ReportPDFCommonvar.PROCESS = '';
       ReportPDFCommonvar.PARTNAME = '';
       ReportPDFCommonvar.PARTNO = '';
+      ReportPDFCommonvar.PARTNO_s = '';
       ReportPDFCommonvar.CUSLOT = '';
       ReportPDFCommonvar.TPKLOT = '';
       ReportPDFCommonvar.MATERIAL = '';
@@ -1425,7 +1431,12 @@ class _ReportPDFCommonState extends State<ReportPDFCommon> {
                                     ),
                                     widget04: Center(
                                       child: Text(
-                                        ReportPDFCommonvar.PARTNO,
+                                        ReportPDFCommonvar.PARTNO.contains("|")
+                                            ? ReportPDFCommonvar.PARTNO
+                                                .split("|")[1]
+                                            : ReportPDFCommonvar.PARTNO == ''
+                                                ? ReportPDFCommonvar.PARTNO_s
+                                                : ReportPDFCommonvar.PARTNO,
                                         style: const TextStyle(
                                           fontSize: 16,
                                         ),
@@ -2445,6 +2456,79 @@ class _ReportPDFCommonState extends State<ReportPDFCommon> {
                                       ),
                                     ),
                                   ),
+                                  BODY7SLOT(
+                                    ListFlex: [5, 1, 4, 2, 2, 2, 2],
+                                    widget01: Center(
+                                      child: Text(
+                                        ReportPDFCommonvar.datalist[8].ITEMname,
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ),
+                                    widget02: Center(
+                                      child: ReportPDFCommonvar
+                                                  .datalist[8].SCMARK ==
+                                              'YES'
+                                          ? PicShow(
+                                              width: 42,
+                                              height: 42,
+                                              base64:
+                                                  ReportPDFCommonvar.SCMASKTYPE)
+                                          : const Text(
+                                              "",
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                    ),
+                                    widget03: Center(
+                                      child: Text(
+                                        ReportPDFCommonvar
+                                            .datalist[8].METHODname,
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ),
+                                    widget04: Center(
+                                      child: Text(
+                                        ReportPDFCommonvar.datalist[8].FREQ,
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ),
+                                    widget05: Center(
+                                      child: Text(
+                                        ReportPDFCommonvar
+                                            .datalist[8].SPECIFICATIONname,
+                                        style: TextStyle(
+                                          fontSize: ReportPDFCommonvar
+                                                      .datalist[8]
+                                                      .SPECIFICATIONname
+                                                      .length >
+                                                  30
+                                              ? 12
+                                              : 16,
+                                        ),
+                                      ),
+                                    ),
+                                    widget06: Center(
+                                      child: Text(
+                                        ReportPDFCommonvar.datalist[8].RESULT,
+                                        style: TextStyle(
+                                          fontSize: ReportPDFCommonvar
+                                                      .datalist[8]
+                                                      .RESULT
+                                                      .length >
+                                                  30
+                                              ? 12
+                                              : 16,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                   const SizedBox(
                                     height: 15,
                                   ),
@@ -3116,6 +3200,7 @@ class _ReportPDFCommonState extends State<ReportPDFCommon> {
                                     ),
                                   ),
                                   PICSLO2SIDE(
+                                    HIs: 390,
                                     PIC01: _dataCOMMON.databasic.PIC01,
                                     PIC02: _dataCOMMON.databasic.PIC02,
                                     widget01: Column(

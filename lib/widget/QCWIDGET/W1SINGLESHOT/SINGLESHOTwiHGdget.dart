@@ -43,6 +43,7 @@ class SINGLESHOTHGmain extends StatelessWidget {
     required this.FINISH,
     this.preview,
     this.confirmdata,
+    this.confirmdatasw,
     //------- Right
     required this.CLEAR,
     required this.BACKPAGE,
@@ -92,6 +93,7 @@ class SINGLESHOTHGmain extends StatelessWidget {
 
   List<INSDATA>? preview; //ok
   List<INSDATA>? confirmdata; //ok
+  bool? confirmdatasw;
 
   //Right --------------------------------------------
   Function CLEAR;
@@ -247,15 +249,17 @@ class SINGLESHOTHGmain extends StatelessWidget {
                     ],
                   ),
                 ),
-                // SizedBox(
-                //   height: 125,
-                //   child: SingleChildScrollView(
-                //     child: _tabtableB3(
-                //       height: 40,
-                //       value: confirmdata ?? [INSDATA()],
-                //     ),
-                //   ),
-                // ),
+                if (confirmdatasw ?? false) ...[
+                  SizedBox(
+                    height: 125,
+                    child: SingleChildScrollView(
+                      child: _tabtableB3(
+                        height: 40,
+                        value: confirmdata ?? [INSDATA()],
+                      ),
+                    ),
+                  ),
+                ],
                 invaluewid ?? Container(),
               ],
             ),

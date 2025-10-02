@@ -326,7 +326,7 @@ class _REPORTuiBODYState extends State<REPORTuiBODY> {
                       },
                       child: Container(
                         width: 100,
-                        height: 40,
+                        height: 60,
                         color: Colors.blue,
                         child: const Center(
                             child: Text(
@@ -334,6 +334,24 @@ class _REPORTuiBODYState extends State<REPORTuiBODY> {
                           style: TextStyle(color: Colors.white),
                         )),
                       ),
+                    ),
+                    const SizedBox(
+                      width: 15,
+                    ),
+                    ComInputText(
+                      sLabel: "Group",
+                      height: 40,
+                      width: 80,
+                      isContr: REPORTvar.iscontrol,
+                      fnContr: (input) {
+                        setState(() {
+                          REPORTvar.iscontrol = input;
+                        });
+                      },
+                      sValue: REPORTvar.Group,
+                      returnfunc: (String s) {
+                        REPORTvar.Group = s;
+                      },
                     ),
                   ],
                 ),

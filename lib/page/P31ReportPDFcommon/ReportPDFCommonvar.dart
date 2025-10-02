@@ -12,6 +12,7 @@ class ReportPDFCommonvar {
   static String PROCESS = '';
   static String PARTNAME = '';
   static String PARTNO = '';
+  static String PARTNO_s = '';
   static String CUSLOT = '';
   static String TPKLOT = '';
   static String MATERIAL = '';
@@ -122,6 +123,7 @@ ReportPDFACTclear() {
   ReportPDFCommonvar.PROCESS = '';
   ReportPDFCommonvar.PARTNAME = '';
   ReportPDFCommonvar.PARTNO = '';
+  ReportPDFCommonvar.PARTNO_s = '';
   ReportPDFCommonvar.CUSLOT = '';
   ReportPDFCommonvar.TPKLOT = '';
   ReportPDFCommonvar.MATERIAL = '';
